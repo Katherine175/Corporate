@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Corporate | Reglas de Negocio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script th:src="@{/js/reglas.js}" defer></script>
+</head>
+
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">luxury-corporate</div>
+            <ul class="sidebar-menu">
+                <li><a th:href="@{/}">Dashboard</a></li>
+                <li><a th:href="@{/simulacion}">Telemetría</a></li>
+                <li><a th:href="@{/reglas}" class="active">Reglas de Negocio</a></li>
+                <li><a th:href="@{/}">Gestión de Usuarios</a></li>
+            </ul>
+        </nav>
+
+        <main class="main">
+            <header class="top-bar">
+                <span>Admin Usuario</span>
+            </header>
+
+            <section class="page-body">
+                <div class="page-title">
+                    <div>
+                        <h1>Reglas de Negocio</h1>
+                        <p>Configuración de umbrales y acciones automatizadas</p>
+                    </div>
+                    <button class="btn-primary" id="btnNuevaRegla" onclick="abrirModalRegla()">+ Nueva Regla</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NOMBRE</th>
+                                <th>TIPO</th>
+                                <th>UMBRAL</th>
+                                <th>ACCIÓN</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="r : ${reglas}">
+                                <td th:text="${r.id}"></td>
+                                <td th:text="${r.nombre}"></td>
+                                <td>
+                                    <span th:class="'badge badge-' + ${r.tipoClass}" th:text="${r.tipo}"></span>
+                                </td>
+                                <td th:text="${r.umbral}"></td>
+                                <td th:text="${r.accion}"></td>
+                                <td>
+                                    <span th:class="${r.activa} ? 'badge badge-activo' : 'badge badge-inactivo'"
+                                        th:text="${r.activa} ? 'Activa' : 'Inactiva'"></span>
+                                </td>
+                                <td class="actions-cell">
+                                    <button type="button" class="btn-small btn-edit btn-editar" th:data-id="${r.id}"
+                                        th:data-nombre="${r.nombre}" th:data-tipo="${r.tipo}"
+                                        th:data-umbral="${r.umbral}" th:data-accion="${r.accion}"
+                                        onclick="editarRegla(this)">Editar</button>
+                                    <form th:action="@{/reglas/eliminar}" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" th:value="${r.id}">
+                                        <button type="submit" class="btn-small btn-danger"
+                                            onclick="return confirmarEliminacion()">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="modalRegla">
+        <div class="modal-box">
+            <header class="modal-top">
+                <h3 id="modalTitle">Nueva Regla de Negocio</h3>
+                <button id="btnCerrarModal" class="btn-close" onclick="cerrarModalRegla()">✕</button>
+            </header>
+            <form th:action="@{/reglas/crear}" th:object="${nuevaRegla}" method="post" id="reglaForm"
+                onsubmit="return validarReglaForm()">
+                <input type="hidden" th:field="*{id}" id="reglaId">
+                <div class="form-row">
+                    <label for="nombre">Nombre de la Regla</label>
+                    <input type="text" th:field="*{nombre}" id="nombre" placeholder="ej. Alerta de Consumo Crítico"
+                        required onchange="validarLongitud(this)">
+                </div>
+                <div class="form-row">
+                    <label for="tipo">Tipo</label>
+                    <select th:field="*{tipo}" id="tipo" onchange="actualizarUmbralSugerido(this)">
+                        <option value="Energía">Energía</option>
+                        <option value="Agua">Agua</option>
+                        <option value="Costo">Costo</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="umbral">Umbral</label>
+                    <input type="number" th:field="*{umbral}" id="umbral" value="0" required>
+                </div>
+                <div class="form-row">
+                    <label for="accion">Acción</label>
+                    <input type="text" th:field="*{accion}" id="accion" placeholder="ej. Enviar notificación" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" id="btnCerrarModal2"
+                        onclick="cerrarModalRegla()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Crear Regla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
