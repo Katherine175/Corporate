@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LuxuryCorporateApplication<luxury-corporate>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.corporate.luxury.luxury_corporate.LuxuryCorporateApplication",
+            "projectName": "luxury-corporate",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
