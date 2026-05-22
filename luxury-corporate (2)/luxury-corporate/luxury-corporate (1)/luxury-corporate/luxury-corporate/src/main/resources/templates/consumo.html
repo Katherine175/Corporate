@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Corporate | Telemetría</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script th:src="@{/js/consumo.js}" defer></script>
+</head>
+
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">luxury-corporate</div>
+            <ul class="sidebar-menu">
+                <li><a th:href="@{/}">Dashboard</a></li>
+                <li><a th:href="@{/simulacion}" class="active">Telemetría</a></li>
+                <li><a th:href="@{/reglas}">Reglas de Negocio</a></li>
+                <li><a th:href="@{/}">Gestión de Usuarios</a></li>
+            </ul>
+        </nav>
+
+        <main class="main">
+            <header class="top-bar">
+                <span>Admin Usuario</span>
+            </header>
+
+            <section class="page-body">
+                <div class="page-title">
+                    <div>
+                        <h1>Gestión de Consumo Energético</h1>
+                        <p>Monitoreo y simulación de consumos por recurso</p>
+                    </div>
+                    <form th:action="@{/simulacion/simular}" method="post" style="display:inline;">
+                        <button type="submit" class="btn-secondary" id="btnGenerar"
+                            onclick="return confirmarSimulacion()">Generar Datos</button>
+                    </form>
+                </div>
+
+                <div th:if="${mensaje}" class="msg-ok">
+                    <span th:text="${mensaje}"></span>
+                </div>
+
+                <div th:if="${error}" class="msg-error">
+                    <span th:text="${error}"></span>
+                </div>
+
+                <div class="form-card">
+                    <h3>Registrar Nuevo Consumo</h3>
+                    <form th:action="@{/simulacion/registrar}" th:object="${nuevoConsumo}" method="post"
+                        class="form-inline-row" onsubmit="return validarConsumoForm()">
+                        <div class="form-row">
+                            <label for="sede">Sede</label>
+                            <input type="text" th:field="*{sede}" id="sede" placeholder="Ej: Sede Lima" required
+                                onchange="validarSede(this)">
+                        </div>
+                        <div class="form-row">
+                            <label for="tipoRecurso">Tipo de Recurso</label>
+                            <select th:field="*{tipoRecurso}" id="tipoRecurso" required
+                                onchange="actualizarMontoBase(this)">
+                                <option value="">Seleccionar...</option>
+                                <option value="Energía">Energía</option>
+                                <option value="Agua">Agua</option>
+                                <option value="Gas">Gas</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label for="monto">Monto (S/.)</label>
+                            <input type="number" th:field="*{monto}" id="monto" placeholder="0.00" step="0.01" required>
+                        </div>
+                        <div class="form-row">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-wrapper">
+                    <table th:if="${!consumos.isEmpty()}">
+                        <thead>
+                            <tr>
+                                <th>SEDE</th>
+                                <th>TIPO DE RECURSO</th>
+                                <th>MONTO</th>
+                                <th>FECHA</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="consumo : ${consumos}">
+                                <td th:text="${consumo.sede}"></td>
+                                <td>
+                                    <span th:class="'badge badge-' + ${consumo.tipoRecurso.toLowerCase()}"
+                                        th:text="${consumo.tipoRecurso}"></span>
+                                </td>
+                                <td class="monto" th:text="'S/. ' + ${#numbers.formatDecimal(consumo.monto, 1, 2)}">
+                                </td>
+                                <td class="fecha" th:text="${#temporals.format(consumo.fecha, 'dd/MM/yyyy HH:mm')}">
+                                </td>
+                                <td class="actions-cell">
+                                    <button type="button" class="btn-small btn-edit" th:data-id="${consumo.id}"
+                                        th:data-sede="${consumo.sede}" th:data-tipo="${consumo.tipoRecurso}"
+                                        th:data-monto="${consumo.monto}" onclick="editarConsumo(this)">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div th:if="${consumos.isEmpty()}" class="empty-msg">
+                        <p>No hay consumos registrados</p>
+                        <small>Genera datos de prueba o registra manualmente</small>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <div id="modalEditar" class="modal-overlay">
+        <div class="modal-box">
+            <header class="modal-top">
+                <h3>Editar Consumo</h3>
+                <button type="button" class="btn-close" onclick="cerrarModalEditarConsumo()">✕</button>
+            </header>
+            <form id="formEditar" method="post" th:action="@{/simulacion/editar}"
+                onsubmit="return validarEdicionConsumo()">
+                <input type="hidden" name="id" id="consumoIdEditar">
+                <div class="form-row">
+                    <label for="editarSede">Sede</label>
+                    <input type="text" id="editarSede" name="sede" readonly required>
+                </div>
+                <div class="form-row">
+                    <label for="editarTipoRecurso">Tipo de Recurso</label>
+                    <select id="editarTipoRecurso" name="tipoRecurso" required>
+                        <option value="Energía">Energía</option>
+                        <option value="Agua">Agua</option>
+                        <option value="Gas">Gas</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="editarMonto">Monto (S/.)</label>
+                    <input type="number" id="editarMonto" name="monto" step="0.01" min="0" max="100000" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="cerrarModalEditarConsumo()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

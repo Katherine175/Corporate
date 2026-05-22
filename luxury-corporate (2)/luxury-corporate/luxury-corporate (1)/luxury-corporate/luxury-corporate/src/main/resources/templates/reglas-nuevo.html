@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Corporate - Reglas de Negocio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+            color: white;
+            padding: 25px 20px;
+            position: fixed;
+            height: 100vh;
+            width: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: #e74c3c;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 0 auto 15px;
+        }
+
+        .logo-text {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 12px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .nav-link i {
+            font-size: 18px;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px 40px;
+            width: calc(100% - 250px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: transparent;
+            padding: 0 0 25px 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(231, 76, 60, 0.15);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .header-left p {
+            color: #a0a0a0;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info p {
+            color: #a0a0a0;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .user-info strong {
+            color: #ffffff;
+            display: block;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+
+        .table-container {
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(231, 76, 60, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(231, 76, 60, 0.05);
+        }
+
+        .table-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .btn-nuevo {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nuevo:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        table thead {
+            background: rgba(231, 76, 60, 0.1);
+            position: sticky;
+            top: 0;
+        }
+
+        table th {
+            color: #a0a0a0;
+            padding: 18px 30px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-bottom: 2px solid rgba(231, 76, 60, 0.2);
+            font-weight: 700;
+        }
+
+        table td {
+            color: #e0e0e0;
+            padding: 18px 30px;
+            border-bottom: 1px solid rgba(231, 76, 60, 0.1);
+            font-size: 14px;
+        }
+
+        table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        table tbody tr:hover {
+            background: rgba(231, 76, 60, 0.08);
+        }
+
+        .badge-activa {
+            background: #27ae60;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-inactiva {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-editar, .btn-eliminar {
+            background: transparent;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-editar:hover {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .btn-eliminar:hover {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">LC</div>
+                <div class="logo-text">Luxury Corporate</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/dashboard" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        Panel
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/usuarios" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Usuarios
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/reglas" class="nav-link active">
+                        <i class="fas fa-cog"></i>
+                        Reglas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/consumo" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        Telemetría
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" class="nav-link" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Salir
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Reglas de Negocio</h1>
+                    <p>Configuración y automatización de reglas del sistema</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <p>Usuario</p>
+                        <strong th:text="${nombre}">Usuario</strong>
+                        <p th:text="${rol}">Rol</p>
+                    </div>
+                    <a href="/logout" class="logout-btn">Cerrar Sesión</a>
+                </div>
+            </div>
+
+            <div class="page-header">
+                <h2>Lista de Reglas</h2>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Reglas Configuradas</h3>
+                    <button class="btn-nuevo">
+                        <i class="fas fa-plus"></i> Nueva Regla
+                    </button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOMBRE</th>
+                            <th>TIPO</th>
+                            <th>UMBRAL</th>
+                            <th>ACCIÓN</th>
+                            <th>ESTADO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="regla : ${reglas}">
+                            <td th:text="${regla.id}">REG-001</td>
+                            <td th:text="${regla.nombre}">Nombre Regla</td>
+                            <td th:text="${regla.tipo}">Tipo</td>
+                            <td th:text="${regla.umbral}">100</td>
+                            <td th:text="${regla.accion}">Acción</td>
+                            <td>
+                                <span th:if="${regla.activa}" class="badge-activa">Activa</span>
+                                <span th:if="!${regla.activa}" class="badge-inactiva">Inactiva</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-editar">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-eliminar">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

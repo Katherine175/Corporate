@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Corporate - Panel Principal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e0e0e0;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            width: 200px;
+            overflow-y: auto;
+        }
+
+        .logo-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: #f9c74f;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a2332;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 0 auto 15px;
+        }
+
+        .logo-text {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .nav-link i {
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        .header {
+            background: transparent;
+            padding: 20px 30px;
+            border-radius: 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: none;
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .header-left p {
+            color: #a0a0a0;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info p {
+            color: #a0a0a0;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .user-info strong {
+            color: #ffffff;
+            display: block;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .module-card {
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+            border-color: rgba(52, 152, 219, 0.5);
+        }
+
+        .module-header {
+            padding: 30px 25px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .module-icon {
+            font-size: 48px;
+            opacity: 0.9;
+        }
+
+        .module-header h2 {
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .module-header p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin: 5px 0 0 0;
+        }
+
+        .module-body {
+            padding: 25px;
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+        }
+
+        .module-description {
+            color: #b0b0b0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .module-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .module-features li {
+            padding: 8px 0;
+            color: #a0a0a0;
+            font-size: 13px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .module-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .module-link {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .module-link:hover {
+            background: #2980b9;
+            text-decoration: none;
+        }
+
+        /* Colores para cada módulo */
+        .usuarios-card .module-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .reglas-card .module-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .telemetria-card .module-header {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+        }
+
+        .reglas-card .module-link {
+            background: #e74c3c;
+        }
+
+        .reglas-card .module-link:hover {
+            background: #c0392b;
+        }
+
+        .telemetria-card .module-link {
+            background: #f39c12;
+        }
+
+        .telemetria-card .module-link:hover {
+            background: #d68910;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                height: auto;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+                overflow-y: visible;
+            }
+
+            .logo-section {
+                margin-bottom: 0;
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+            .nav-menu {
+                display: flex;
+                gap: 15px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-left {
+                width: 100%;
+            }
+
+            .header-right {
+                width: 100%;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">SC</div>
+                <div class="logo-text">Luxury Corporate</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/dashboard" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        Panel
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/usuarios" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Usuarios
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/reglas" class="nav-link">
+                        <i class="fas fa-rules"></i>
+                        Reglas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/consumo" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        Telemetría
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" class="nav-link" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Salir
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Panel de Control</h1>
+                    <p>Bienvenido al sistema de gestión Luxury Corporate</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <p>Usuario</p>
+                        <strong th:text="${nombre}">Usuario</strong>
+                        <p th:text="${rol}">Rol</p>
+                    </div>
+                    <a href="/logout" class="logout-btn">Cerrar Sesión</a>
+                </div>
+            </div>
+
+            <!-- Módulos -->
+            <div class="modules-grid">
+                <!-- Módulo Gestión de Usuarios -->
+                <a href="/usuarios" class="module-card usuarios-card">
+                    <div class="module-header">
+                        <div class="module-icon">👥</div>
+                        <div>
+                            <h2>Gestión de Usuarios</h2>
+                            <p>Administración de roles y permisos</p>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <div class="module-description">
+                            Crea, edita y gestiona los usuarios del sistema con asignación de roles y ubicaciones.
+                        </div>
+                        <ul class="module-features">
+                            <li>Crear nuevos usuarios</li>
+                            <li>Editar información</li>
+                            <li>Asignar roles</li>
+                            <li>Gestionar permisos</li>
+                        </ul>
+                        <span class="module-link">Acceder →</span>
+                    </div>
+                </a>
+
+                <!-- Módulo Reglas de Negocio -->
+                <a href="/reglas" class="module-card reglas-card">
+                    <div class="module-header">
+                        <div class="module-icon">⚙️</div>
+                        <div>
+                            <h2>Reglas de Negocio</h2>
+                            <p>Configuración y automatización</p>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <div class="module-description">
+                            Define y gestiona las reglas automáticas que rigen el comportamiento del sistema.
+                        </div>
+                        <ul class="module-features">
+                            <li>Crear reglas personalizadas</li>
+                            <li>Definir umbrales</li>
+                            <li>Automatizar acciones</li>
+                            <li>Activar/desactivar reglas</li>
+                        </ul>
+                        <span class="module-link">Acceder →</span>
+                    </div>
+                </a>
+
+                <!-- Módulo Telemetría -->
+                <a href="/consumo" class="module-card telemetria-card">
+                    <div class="module-header">
+                        <div class="module-icon">📊</div>
+                        <div>
+                            <h2>Telemetría</h2>
+                            <p>Monitoreo y reportes</p>
+                        </div>
+                    </div>
+                    <div class="module-body">
+                        <div class="module-description">
+                            Visualiza métricas, analiza consumo y obtén reportes detallados del sistema.
+                        </div>
+                        <ul class="module-features">
+                            <li>Gráficos en tiempo real</li>
+                            <li>Análisis de consumo</li>
+                            <li>Reportes personalizados</li>
+                            <li>Exportación de datos</li>
+                        </ul>
+                        <span class="module-link">Acceder →</span>
+                    </div>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Actualizar enlace activo en el menú
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.href === window.location.href || link.href.slice(0, -1) === window.location.href) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
