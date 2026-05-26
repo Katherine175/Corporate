@@ -1,0 +1,179 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	color: #1f2937;
+	background: #f5f7fb;
+}
+
+a {
+	color: #174ea6;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.topbar {
+	background: #111827;
+	color: #ffffff;
+	padding: 14px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.brand {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.nav a,
+.nav button {
+	color: #ffffff;
+	background: transparent;
+	border: 0;
+	font: inherit;
+	padding: 0;
+	cursor: pointer;
+}
+
+.container {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 28px 20px;
+}
+
+.panel {
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+}
+
+.metric {
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	padding: 18px;
+}
+
+.metric span {
+	display: block;
+	color: #6b7280;
+	font-size: 13px;
+	margin-bottom: 8px;
+}
+
+.metric strong {
+	font-size: 26px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: #ffffff;
+}
+
+th,
+td {
+	border-bottom: 1px solid #e5e7eb;
+	padding: 11px 10px;
+	text-align: left;
+	vertical-align: top;
+}
+
+th {
+	background: #f9fafb;
+	font-size: 13px;
+	text-transform: uppercase;
+	color: #4b5563;
+}
+
+form.inline {
+	display: inline;
+}
+
+label {
+	display: block;
+	font-weight: 700;
+	margin-bottom: 6px;
+}
+
+input,
+select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #cbd5e1;
+	border-radius: 6px;
+	margin-bottom: 14px;
+	background: #ffffff;
+}
+
+.button,
+button {
+	display: inline-block;
+	border: 0;
+	border-radius: 6px;
+	background: #174ea6;
+	color: #ffffff;
+	padding: 10px 14px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.button.secondary,
+button.secondary {
+	background: #4b5563;
+}
+
+.button.danger,
+button.danger {
+	background: #b42318;
+}
+
+.actions {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	flex-wrap: wrap;
+	margin: 16px 0;
+}
+
+.message {
+	padding: 12px 14px;
+	border-radius: 6px;
+	background: #ecfdf3;
+	color: #067647;
+	margin-bottom: 16px;
+}
+
+.error {
+	color: #b42318;
+	font-size: 13px;
+	margin-top: -10px;
+	margin-bottom: 12px;
+}
+
+.auth {
+	max-width: 420px;
+	margin: 64px auto;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Consumos - Luxury</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body>
+<header class="topbar"><div class="brand">Luxury</div><nav class="nav"><a th:href="@{/dashboard}">Dashboard</a><a th:href="@{/consumos}">Consumos</a><a th:href="@{/consumos/registrar}">Registrar</a><a th:href="@{/alertas}">Alertas</a><form class="inline" th:action="@{/logout}" method="post"><button type="submit">Salir</button></form></nav></header>
+<main class="container">
+	<h1>Consumos</h1>
+	<div class="message" th:if="${successMessage}" th:text="${successMessage}"></div>
+	<div class="actions"><a class="button" th:href="@{/consumos/registrar}">Registrar consumo</a></div>
+	<table>
+		<thead><tr><th>ID</th><th>Sede</th><th>Recurso</th><th>Cantidad</th><th>Unidad</th><th>Fecha</th><th>Periodo</th><th>Detalle</th></tr></thead>
+		<tbody>
+		<tr th:each="consumo : ${consumos}">
+			<td th:text="${consumo.id}"></td>
+			<td th:text="${consumo.sede}"></td>
+			<td th:text="${consumo.tipoRecurso}"></td>
+			<td th:text="${consumo.cantidadConsumida}"></td>
+			<td th:text="${consumo.unidadMedida}"></td>
+			<td th:text="${consumo.fechaConsumo}"></td>
+			<td th:text="${consumo.periodo}"></td>
+			<td><a th:href="@{/consumos/{id}(id=${consumo.id})}">Ver</a></td>
+		</tr>
+		</tbody>
+	</table>
+</main>
+</body>
+</html>
