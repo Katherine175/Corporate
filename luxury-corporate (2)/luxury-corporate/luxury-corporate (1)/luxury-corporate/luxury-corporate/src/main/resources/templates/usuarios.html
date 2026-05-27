@@ -12,15 +12,7 @@
 
 <body>
     <div class="layout">
-        <nav class="sidebar">
-            <div class="sidebar-logo">luxury-corporate</div>
-            <ul class="sidebar-menu">
-                <li><a th:href="@{/}">Dashboard</a></li>
-                <li><a th:href="@{/simulacion}">Telemetría</a></li>
-                <li><a th:href="@{/reglas}">Reglas de Negocio</a></li>
-                <li><a th:href="@{/}" class="active">Gestión de Usuarios</a></li>
-            </ul>
-        </nav>
+        <nav th:replace="~{fragments/navbar :: sidebarGlobal}"></nav>
 
         <main class="main">
             <header class="top-bar">
