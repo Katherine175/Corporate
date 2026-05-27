@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Recursos - Luxury</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body>
+<header class="topbar"><div class="brand">Luxury</div><nav class="nav">
+		<a th:href="@{/dashboard}">Dashboard</a>
+		<a th:href="@{/sedes}">Sedes</a>
+		<a th:href="@{/tipos-recurso}">Recursos</a>
+		<a th:href="@{/consumos}">Consumos</a>
+		<a th:href="@{/alertas}">Alertas</a>
+		<a th:href="@{/reportes/mensual}">Reportes</a>
+		<a th:href="@{/tarifas}">Tarifas</a>
+		<a th:href="@{/umbrales}">Umbrales</a>
+		<a th:href="@{/monedas}">Monedas</a>
+		<a th:href="@{/tipos-cambio}">Tipos de cambio</a>
+		<a th:href="@{/auditorias}">Auditorias</a>
+		<a th:href="@{/eventos-acceso}">Eventos de acceso</a>
+		<a th:href="@{/usuarios}">Gestion de usuarios</a>
+		<form class="inline" th:action="@{/logout}" method="post"><button type="submit">Salir</button></form>
+	</nav></header>
+<main class="container">
+	<h1>Tipos de recurso</h1>
+	<div class="message" th:if="${successMessage}" th:text="${successMessage}"></div>
+	<div class="actions"><a class="button" th:href="@{/tipos-recurso/registrar}">Registrar recurso</a></div>
+	<table>
+		<thead><tr><th>ID</th><th>Nombre</th><th>Unidad</th><th>Acciones</th></tr></thead>
+		<tbody>
+		<tr th:each="tipo : ${tiposRecurso}">
+			<td th:text="${tipo.id}"></td>
+			<td th:text="${tipo.nombre}"></td>
+			<td th:text="${tipo.unidadMedida}"></td>
+			<td><form class="inline" th:action="@{/tipos-recurso/{id}/eliminar(id=${tipo.id})}" method="post"><button class="danger" type="submit">Eliminar</button></form></td>
+		</tr>
+		</tbody>
+	</table>
+</main>
+</body>
+</html>

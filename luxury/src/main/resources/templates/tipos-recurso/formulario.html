@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Registrar recurso - Luxury</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body>
+<header class="topbar"><div class="brand">Luxury</div><nav class="nav">
+		<a th:href="@{/dashboard}">Dashboard</a>
+		<a th:href="@{/sedes}">Sedes</a>
+		<a th:href="@{/tipos-recurso}">Recursos</a>
+		<a th:href="@{/consumos}">Consumos</a>
+		<a th:href="@{/alertas}">Alertas</a>
+		<a th:href="@{/reportes/mensual}">Reportes</a>
+		<a th:href="@{/tarifas}">Tarifas</a>
+		<a th:href="@{/umbrales}">Umbrales</a>
+		<a th:href="@{/monedas}">Monedas</a>
+		<a th:href="@{/tipos-cambio}">Tipos de cambio</a>
+		<a th:href="@{/auditorias}">Auditorias</a>
+		<a th:href="@{/eventos-acceso}">Eventos de acceso</a>
+		<a th:href="@{/usuarios}">Gestion de usuarios</a>
+		<form class="inline" th:action="@{/logout}" method="post"><button type="submit">Salir</button></form>
+	</nav></header>
+<main class="container">
+	<section class="panel">
+		<h1>Registrar tipo de recurso</h1>
+		<form th:action="@{/tipos-recurso}" th:object="${tipoRecursoForm}" method="post">
+			<label for="nombre">Nombre</label>
+			<input id="nombre" th:field="*{nombre}">
+			<div class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+			<label for="unidadMedida">Unidad de medida</label>
+			<input id="unidadMedida" th:field="*{unidadMedida}">
+			<div class="error" th:if="${#fields.hasErrors('unidadMedida')}" th:errors="*{unidadMedida}"></div>
+			<button type="submit">Guardar</button>
+			<a class="button secondary" th:href="@{/tipos-recurso}">Cancelar</a>
+		</form>
+	</section>
+</main>
+</body>
+</html>

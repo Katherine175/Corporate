@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Sedes - Luxury</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body>
+<header class="topbar"><div class="brand">Luxury</div><nav class="nav">
+		<a th:href="@{/dashboard}">Dashboard</a>
+		<a th:href="@{/sedes}">Sedes</a>
+		<a th:href="@{/tipos-recurso}">Recursos</a>
+		<a th:href="@{/consumos}">Consumos</a>
+		<a th:href="@{/alertas}">Alertas</a>
+		<a th:href="@{/reportes/mensual}">Reportes</a>
+		<a th:href="@{/tarifas}">Tarifas</a>
+		<a th:href="@{/umbrales}">Umbrales</a>
+		<a th:href="@{/monedas}">Monedas</a>
+		<a th:href="@{/tipos-cambio}">Tipos de cambio</a>
+		<a th:href="@{/auditorias}">Auditorias</a>
+		<a th:href="@{/eventos-acceso}">Eventos de acceso</a>
+		<a th:href="@{/usuarios}">Gestion de usuarios</a>
+		<form class="inline" th:action="@{/logout}" method="post"><button type="submit">Salir</button></form>
+	</nav></header>
+<main class="container">
+	<h1>Sedes</h1>
+	<div class="message" th:if="${successMessage}" th:text="${successMessage}"></div>
+	<div class="actions"><a class="button" th:href="@{/sedes/registrar}">Registrar sede</a></div>
+	<table>
+		<thead><tr><th>ID</th><th>Nombre</th><th>Ciudad</th><th>Direccion</th><th>Estado</th><th>Acciones</th></tr></thead>
+		<tbody>
+		<tr th:each="sede : ${sedes}">
+			<td th:text="${sede.id}"></td>
+			<td th:text="${sede.nombre}"></td>
+			<td th:text="${sede.ciudad}"></td>
+			<td th:text="${sede.direccion}"></td>
+			<td th:text="${sede.estado}"></td>
+			<td>
+				<a th:href="@{/sedes/{id}/editar(id=${sede.id})}">Editar</a>
+				<form class="inline" th:action="@{/sedes/{id}/eliminar(id=${sede.id})}" method="post"><button class="danger" type="submit">Desactivar</button></form>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</main>
+</body>
+</html>

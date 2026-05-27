@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><meta charset="UTF-8"><title>Usuarios - Luxury</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body>
+<header class="topbar"><div class="brand">Luxury</div><nav class="nav">
+		<a th:href="@{/dashboard}">Dashboard</a>
+		<a th:href="@{/sedes}">Sedes</a>
+		<a th:href="@{/tipos-recurso}">Recursos</a>
+		<a th:href="@{/consumos}">Consumos</a>
+		<a th:href="@{/alertas}">Alertas</a>
+		<a th:href="@{/reportes/mensual}">Reportes</a>
+		<a th:href="@{/tarifas}">Tarifas</a>
+		<a th:href="@{/umbrales}">Umbrales</a>
+		<a th:href="@{/monedas}">Monedas</a>
+		<a th:href="@{/tipos-cambio}">Tipos de cambio</a>
+		<a th:href="@{/auditorias}">Auditorias</a>
+		<a th:href="@{/eventos-acceso}">Eventos de acceso</a>
+		<a th:href="@{/usuarios}">Gestion de usuarios</a>
+		<form class="inline" th:action="@{/logout}" method="post"><button type="submit">Salir</button></form>
+	</nav></header>
+<main class="container">
+	<h1>Gestion de usuarios</h1>
+	<div class="message" th:if="${successMessage}" th:text="${successMessage}"></div>
+	<div class="actions">
+		<a class="button" th:href="@{/usuarios/registrar}">Registrar usuario</a>
+		<form method="get" th:action="@{/usuarios}" class="inline" style="margin-left:auto;">
+			<select name="estado" onchange="this.form.submit()">
+				<option value="" th:selected="${estadoSeleccionado == null or estadoSeleccionado == ''}">Todos</option>
+				<option value="ACTIVO" th:selected="${estadoSeleccionado == 'ACTIVO'}">Activos</option>
+				<option value="INACTIVO" th:selected="${estadoSeleccionado == 'INACTIVO'}">Inactivos</option>
+			</select>
+		</form>
+	</div>
+	<table>
+		<thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Estado</th><th>Roles</th><th>Acciones</th></tr></thead>
+		<tbody>
+		<tr th:each="usuario : ${usuarios}">
+			<td th:text="${usuario.id}"></td>
+			<td th:text="${usuario.nombre}"></td>
+			<td th:text="${usuario.email}"></td>
+			<td th:text="${usuario.estado}"></td>
+			<td th:text="${usuario.roles}"></td>
+			<td>
+				<a th:href="@{/usuarios/{id}(id=${usuario.id})}">Ver</a>
+				<a th:href="@{/usuarios/{id}/editar(id=${usuario.id})}">Editar</a>
+				<form class="inline" th:action="@{/usuarios/{id}/toggle-estado(id=${usuario.id})}" method="post"><button th:class="${usuario.estado.name() == 'ACTIVO' ? 'danger' : 'primary'}" type="submit" th:text="${usuario.estado.name() == 'ACTIVO' ? 'Desactivar' : 'Activar'}">Desactivar</button></form>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</main>
+</body>
+</html>
