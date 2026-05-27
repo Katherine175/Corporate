@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><meta charset="UTF-8"><title>Formulario usuario - Luxury</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body>
+<header class="topbar"><div class="brand">Luxury</div><nav class="nav">
+		<a th:href="@{/dashboard}">Dashboard</a>
+		<a th:href="@{/sedes}">Sedes</a>
+		<a th:href="@{/tipos-recurso}">Recursos</a>
+		<a th:href="@{/consumos}">Consumos</a>
+		<a th:href="@{/alertas}">Alertas</a>
+		<a th:href="@{/reportes/mensual}">Reportes</a>
+		<a th:href="@{/tarifas}">Tarifas</a>
+		<a th:href="@{/umbrales}">Umbrales</a>
+		<a th:href="@{/monedas}">Monedas</a>
+		<a th:href="@{/tipos-cambio}">Tipos de cambio</a>
+		<a th:href="@{/auditorias}">Auditorias</a>
+		<a th:href="@{/eventos-acceso}">Eventos de acceso</a>
+		<a th:href="@{/usuarios}">Gestion de usuarios</a>
+		<form class="inline" th:action="@{/logout}" method="post"><button type="submit">Salir</button></form>
+	</nav></header>
+<main class="container">
+	<section class="panel">
+		<h1 th:text="${usuarioId == null ? 'Registrar usuario' : 'Editar usuario'}">Usuario</h1>
+		<form th:action="${usuarioId == null ? '/usuarios' : '/usuarios/' + usuarioId + '/editar'}" th:object="${usuarioForm}" method="post" autocomplete="off">
+			<label for="nombre">Nombre</label>
+			<input id="nombre" th:field="*{nombre}" autocomplete="off" required>
+			<div class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+			<label for="email">Email</label>
+			<input id="email" type="email" th:field="*{email}" autocomplete="off" required>
+			<div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+			<label for="password" th:text="${usuarioId == null ? 'Password' : 'Password (dejar vacio para no cambiar)'}">Password</label>
+			<input id="password" type="password" th:field="*{password}" autocomplete="new-password" th:required="${usuarioId == null}">
+			<div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+			<label for="rol">Rol</label>
+			<select id="rol" th:field="*{rol}">
+				<option th:each="r : ${roles}" th:value="${r.nombre}" th:text="${r.nombre}"></option>
+			</select>
+			<label for="estado">Estado</label>
+			<select id="estado" th:field="*{estado}">
+				<option value="ACTIVO">ACTIVO</option>
+				<option value="INACTIVO">INACTIVO</option>
+			</select>
+			<button type="submit">Guardar</button>
+			<a class="button secondary" th:href="@{/usuarios}">Cancelar</a>
+		</form>
+	</section>
+</main>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Registro - Luxury</title>
+	<link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="auth panel">
+	<h1>Registrar usuario</h1>
+	<form th:action="@{/registro}" th:object="${registerForm}" method="post">
+		<label for="nombre">Nombre</label>
+		<input id="nombre" th:field="*{nombre}" required>
+		<div class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+		<label for="email">Email</label>
+		<input id="email" type="email" th:field="*{email}" required>
+		<div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+		<label for="password">Password</label>
+		<input id="password" type="password" th:field="*{password}" required>
+		<div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+		<button type="submit">Registrar</button>
+		<a class="button secondary" th:href="@{/login}">Volver</a>
+	</form>
+</main>
+</body>
+</html>

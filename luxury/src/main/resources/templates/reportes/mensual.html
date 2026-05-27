@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Reportes - Luxury</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body>
+<header class="topbar"><div class="brand">Luxury</div><nav class="nav">
+		<a th:href="@{/dashboard}">Dashboard</a>
+		<a th:href="@{/sedes}">Sedes</a>
+		<a th:href="@{/tipos-recurso}">Recursos</a>
+		<a th:href="@{/consumos}">Consumos</a>
+		<a th:href="@{/alertas}">Alertas</a>
+		<a th:href="@{/reportes/mensual}">Reportes</a>
+		<a th:href="@{/tarifas}">Tarifas</a>
+		<a th:href="@{/umbrales}">Umbrales</a>
+		<a th:href="@{/monedas}">Monedas</a>
+		<a th:href="@{/tipos-cambio}">Tipos de cambio</a>
+		<a th:href="@{/auditorias}">Auditorias</a>
+		<a th:href="@{/eventos-acceso}">Eventos de acceso</a>
+		<a th:href="@{/usuarios}">Gestion de usuarios</a>
+		<form class="inline" th:action="@{/logout}" method="post"><button type="submit">Salir</button></form>
+	</nav></header>
+<main class="container">
+	<h1>Reporte mensual</h1>
+	<div class="message error" th:if="${errorForm}" th:text="${errorForm}" style="background: #fef0f0; border: 1px solid #fecdd3;"></div>
+	<section class="panel">
+		<form th:action="@{/reportes/mensual}" method="get">
+			<label for="periodo">Periodo</label>
+			<input id="periodo" name="periodo" type="month" th:value="${periodo}" required>
+			<button type="submit">Consultar</button>
+		</form>
+	</section>
+	<table th:if="${reportes != null}">
+		<thead><tr><th>Periodo</th><th>Sede</th><th>Recurso</th><th>Total consumido</th><th>PEN</th><th>USD</th><th>EUR</th></tr></thead>
+		<tbody>
+		<tr th:each="reporte : ${reportes}">
+			<td th:text="${reporte.periodo}"></td>
+			<td th:text="${reporte.sede}"></td>
+			<td th:text="${reporte.tipoRecurso}"></td>
+			<td th:text="${reporte.totalConsumido}"></td>
+			<td th:text="${reporte.costoPen}"></td>
+			<td th:text="${reporte.costoUsd}"></td>
+			<td th:text="${reporte.costoEur}"></td>
+		</tr>
+		</tbody>
+	</table>
+</main>
+</body>
+</html>
