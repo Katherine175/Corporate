@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -350,7 +351,8 @@
             gap: 10px;
         }
 
-        .btn-editar, .btn-eliminar {
+        .btn-editar,
+        .btn-eliminar {
             background: transparent;
             border: none;
             color: #3498db;
@@ -405,55 +407,18 @@
                 font-size: 12px;
             }
 
-            table td, table th {
+            table td,
+            table th {
                 padding: 10px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo-section">
-                <div class="logo-icon">SC</div>
-                <div class="logo-text">Luxury Corporate</div>
-            </div>
 
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/dashboard" class="nav-link">
-                        <i class="fas fa-home"></i>
-                        Panel
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/usuarios" class="nav-link active">
-                        <i class="fas fa-users"></i>
-                        Usuarios
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/reglas" class="nav-link">
-                        <i class="fas fa-rules"></i>
-                        Reglas
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/consumo" class="nav-link">
-                        <i class="fas fa-chart-line"></i>
-                        Telemetría
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/logout" class="nav-link" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Salir
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
+        <aside th:replace="~{fragments/navbar :: sidebarGlobal}"></aside>
         <!-- Main Content -->
         <main class="main-content">
             <div class="header">
@@ -515,19 +480,24 @@
                             <td th:text="${usuario.nombre}">Nombre Usuario</td>
                             <td th:text="${usuario.email}">usuario@smartcorp.com</td>
                             <td>
-                                <span th:if="${usuario.rol.name() == 'ADMINISTRADOR'}" class="badge-admin">ADMINISTRADOR</span>
+                                <span th:if="${usuario.rol.name() == 'ADMINISTRADOR'}"
+                                    class="badge-admin">ADMINISTRADOR</span>
                                 <span th:if="${usuario.rol.name() == 'OPERADOR'}" class="badge-operador">OPERADOR</span>
-                                <span th:if="${usuario.rol.name() == 'SUPERVISOR'}" class="badge-supervisor">SUPERVISOR</span>
+                                <span th:if="${usuario.rol.name() == 'SUPERVISOR'}"
+                                    class="badge-supervisor">SUPERVISOR</span>
                             </td>
                             <td th:text="${usuario.ubicacion}">Ubicación</td>
-                            <td th:text="${#temporals.format(usuario.ultimoAcceso, 'yyyy-MM-dd HH:mm:ss')}">2026-05-20</td>
+                            <td th:text="${#temporals.format(usuario.ultimoAcceso, 'yyyy-MM-dd HH:mm:ss')}">2026-05-20
+                            </td>
                             <td>
                                 <span th:if="${usuario.estado.name() == 'ACTIVO'}" class="badge-activo">Activo</span>
-                                <span th:if="${usuario.estado.name() == 'INACTIVO'}" class="badge-inactivo">Inactivo</span>
+                                <span th:if="${usuario.estado.name() == 'INACTIVO'}"
+                                    class="badge-inactivo">Inactivo</span>
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="btn-editar" data-id="" data-nombre="" data-email="" data-rol="" data-ubicacion="" data-estado="" onclick="editarUsuario(this)">
+                                    <button class="btn-editar" data-id="" data-nombre="" data-email="" data-rol=""
+                                        data-ubicacion="" data-estado="" onclick="editarUsuario(this)">
                                         <i class="fas fa-edit"></i> Editar
                                     </button>
                                     <button class="btn-eliminar" onclick="confirmarEliminar()">
@@ -554,4 +524,5 @@
         }
     </script>
 </body>
+
 </html>
